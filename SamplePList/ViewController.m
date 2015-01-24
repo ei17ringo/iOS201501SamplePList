@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "detailViewController.h"
 
 @interface ViewController ()
 {
@@ -54,11 +55,26 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdetifier];
     }
     
-    cell.textLabel.text = _areaArray[indexPath.row];
+    cell.textLabel.text = _areaArray[indexPath.row][@"Name"];
     
     return cell;
     
 }
+
+//セルがタップされた時に発動するメソッド
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    //画面遷移するViewControllerのカプセル化（インスタンス化）
+    detailViewController *dvc = [self.storyboard instantiateViewControllerWithIdentifier:@"DetailViewController"];
+   
+    //選択された地域の友達リストを遷移先に渡す
+    dvc.friendsList = _areaArray[indexPath.row][@"FriendsList"];
+    dvc.areaString = _areaArray[indexPath.row][@"Name"];
+   
+    //ナビゲーションコントローラーの機能で画面遷移
+    [[self navigationController] pushViewController:dvc animated:YES];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
